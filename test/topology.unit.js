@@ -41,6 +41,35 @@ describe('topology json schema', function () {
         }
       }
     }
+    ctx.directExchange = {
+      exchange: 'foo-name',
+      type: 'direct',
+      options: {},
+      bindings: [{
+        destination: ctx.queue,
+        args: {},
+        routingKey: 'hello'
+      }]
+    }
+    ctx.fanoutExchange = {
+      exchange: 'foo-name',
+      type: 'fanout',
+      options: {},
+      bindings: [{
+        destination: ctx.queue,
+        args: {}
+      }]
+    }
+    ctx.topicExchange = {
+      exchange: 'foo-name',
+      type: 'topic',
+      options: {},
+      bindings: [{
+        destination: ctx.queue,
+        args: {},
+        routingPattern: 'hello'
+      }]
+    }
     done()
   })
 
@@ -60,16 +89,7 @@ describe('topology json schema', function () {
 
   describe('direct exchange', function () {
     beforeEach(function (done) {
-      ctx.exchange = {
-        exchange: 'foo-name',
-        type: 'direct',
-        options: {},
-        bindings: [{
-          destination: ctx.queue,
-          args: {},
-          routingKey: 'hello'
-        }]
-      }
+      ctx.exchange = ctx.directExchange
       ctx.validate = ajv.compile(topologySchema)
       done()
     })
@@ -84,15 +104,7 @@ describe('topology json schema', function () {
 
   describe('fanout exchange', function () {
     beforeEach(function (done) {
-      ctx.exchange = {
-        exchange: 'foo-name',
-        type: 'fanout',
-        options: {},
-        bindings: [{
-          destination: ctx.queue,
-          args: {}
-        }]
-      }
+      ctx.exchange = ctx.fanoutExchange
       ctx.validate = ajv.compile(topologySchema)
       done()
     })
@@ -106,16 +118,7 @@ describe('topology json schema', function () {
 
   describe('topic exchange', function () {
     beforeEach(function (done) {
-      ctx.exchange = {
-        exchange: 'foo-name',
-        type: 'topic',
-        options: {},
-        bindings: [{
-          destination: ctx.queue,
-          args: {},
-          routingPattern: 'hello'
-        }]
-      }
+      ctx.exchange = ctx.topicExchange
       ctx.validate = ajv.compile(topologySchema)
       done()
     })
