@@ -3,6 +3,8 @@ var Code = require('code')
 var Lab = require('lab')
 var put = require('101/put')
 
+var topologySchema = require('../lib/json-schemas/topology.js')
+var queueSchema = require('../lib/json-schemas/queue.js')
 var directExchangeSchema = require('../lib/json-schemas/direct-exchange.js')
 var fanoutExchangeSchema = require('../lib/json-schemas/fanout-exchange.js')
 var topicExchangeSchema = require('../lib/json-schemas/topic-exchange.js')
@@ -10,11 +12,24 @@ var topicExchangeSchema = require('../lib/json-schemas/topic-exchange.js')
 var lab = exports.lab = Lab.script()
 var describe = lab.describe
 var it = lab.it
+var before = lab.before
 var beforeEach = lab.beforeEach
 var expect = Code.expect
 
 describe('exchange json schema', function () {
   var ctx
+
+  before(function (done) {
+    // resolves circular refs
+    ajv.addSchema([
+      queueSchema,
+      directExchangeSchema,
+      fanoutExchangeSchema,
+      topicExchangeSchema,
+      topologySchema
+    ])
+    done()
+  })
 
   beforeEach(function (done) {
     ctx = {}
