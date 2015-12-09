@@ -4,7 +4,7 @@
   "description": "A schema definition module for RabbitMQ graphs and messages",
   "main": "index.js",
   "scripts": {
-    "test": "lab --assert code --threshold 100 test",
+    "test": "lab --assert code --threshold 100",
     "test-watch": "nodemon -x npm test",
     "lint": "standard",
     "format": "standard --format"
@@ -31,6 +31,7 @@
     "code": "^2.0.1",
     "lab": "^7.3.0",
     "nodemon": "^1.8.1",
+    "sinon": "^1.17.2",
     "standard": "^5.4.1",
     "standard-format": "^2.1.0"
   },
@@ -40,8 +41,8 @@
     "bind-right": "^0.6.0",
     "capitalize": "^1.0.0",
     "code": "^1.5.0",
-    "joi": "^7.0.1",
-    "lab": "^6.2.0",
-    "object-loops": "^0.4.0"
+    "is-circular": "^1.0.0",
+    "keypather": "^1.10.1",
+    "lab": "^6.2.0"
   }
 }
