@@ -82,6 +82,7 @@ var fanoutExchangeSchema = new RabbitSchema({
 * Validates all elements for required properties and types
 * Validates topology to not be circular
 * Validates topology for duplicates
+
 ### Validate a full Topology
 ```js
 var RabbitSchema = require('rabbitmq-schema')
