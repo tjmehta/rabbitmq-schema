@@ -53,7 +53,7 @@ describe('exchange json schema', function () {
       bindings: [{
         destination: ctx.queue,
         args: {},
-        routingKey: 'hello'
+        routingPattern: 'hello'
       }]
     }
     ctx.fanoutExchange = {
@@ -87,11 +87,11 @@ describe('exchange json schema', function () {
 
     itShouldPassCommonExchangeTests()
 
-    it('should error if missing "bindings[*].routingKey"', function (done) {
-      delete ctx.exchange.bindings[0].routingKey
+    it('should error if missing "bindings[*].routingPattern"', function (done) {
+      delete ctx.exchange.bindings[0].routingPattern
       expect(ctx.validate(ctx.exchange)).to.be.false()
       // console.log(ctx.validate.errors[0])
-      expect(ctx.validate.errors[0].message).to.match(/required.*routingKey/)
+      expect(ctx.validate.errors[0].message).to.match(/required.*routingPattern/)
       done()
     })
   })

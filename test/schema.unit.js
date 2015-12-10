@@ -99,7 +99,7 @@ describe('rabbitmq-schema', function () {
         exchange: 'exchange1',
         type: 'direct',
         bindings: [{
-          routingKey: 'key',
+          routingPattern: 'key',
           destination: {
             exchange: 'exchange2',
             type: 'topic',
@@ -242,7 +242,7 @@ describe('rabbitmq-schema', function () {
             type: 'direct',
             bindings: [
               {
-                routingKey: 'routing.key',
+                routingPattern: 'routing.key',
                 destination: {
                   exchange: 'exchange2',
                   type: 'topic',

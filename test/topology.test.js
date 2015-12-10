@@ -48,7 +48,7 @@ describe('topology json schema', function () {
       bindings: [{
         destination: ctx.queue,
         args: {},
-        routingKey: 'hello'
+        routingPattern: 'hello'
       }]
     }
     ctx.fanoutExchange = {
