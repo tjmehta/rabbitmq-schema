@@ -1,4 +1,4 @@
-# rabbitmq-schema
+# rabbitmq-schema [![Build Status](https://travis-ci.org/tjmehta/rabbitmq-schema.svg)](https://travis-ci.org/tjmehta/rabbitmq-schema) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 A schema definition module for RabbitMQ topologies
 
 # Installation
