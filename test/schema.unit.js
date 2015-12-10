@@ -149,6 +149,40 @@ describe('rabbitmq-schema', function () {
 
       done()
     })
+
+    describe('validate nested array', function () {
+      beforeEach(function (done) {
+        ctx.json = [ ctx.json ]
+
+        done()
+      })
+
+      it('should throw an SchemaValidationError if both invalid queue and invalid exchange', function (done) {
+        keypather.set(ctx.json, '[0].bindings[0].destination.bindings[0]', null)
+        expect(RabbitSchema.validate.bind(null, ctx.json))
+          .to.throw("'[0].bindings[0].destination.bindings[0]' should be object")
+
+        done()
+      })
+
+      it('should attempt to validate as a queue if it is queue-like', function (done) {
+        keypather.set(ctx.json,
+          '[0].bindings[0].destination.bindings[0].destination', { queue: 'queue' })
+        expect(RabbitSchema.validate.bind(null, ctx.json))
+          .to.throw("'[0].bindings[0].destination.bindings[0].destination' should have required property 'messageSchema'")
+
+        done()
+      })
+
+      it('should attempt to validate as a exchange if it is exchange-like', function (done) {
+        keypather.set(ctx.json,
+          '[0].bindings[0].destination.bindings[0].destination', { exchange: 'exchange' })
+        expect(RabbitSchema.validate.bind(null, ctx.json))
+          .to.throw("'[0].bindings[0].destination.bindings[0].destination.type' must be direct, topic, or fanout")
+
+        done()
+      })
+    })
   })
 
   describe('_validateQueue', function () {
