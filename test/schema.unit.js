@@ -1,6 +1,7 @@
 var Code = require('code')
 var keypather = require('keypather')()
 var Lab = require('lab')
+var put = require('101/put')
 var sinon = require('sinon')
 
 var RabbitSchema = require('../index')
@@ -88,6 +89,18 @@ describe('rabbitmq-schema', function () {
       expect(RabbitSchema.validate.bind(null, json))
         .to.throw(ctx.exchangeErr.message)
       sinon.assert.calledWith(RabbitSchema._validateExchange, json)
+      done()
+    })
+
+    it('should attempt array as an array of connected topologies', function (done) {
+      var json = [
+        { queue: 'queue', messageSchema: {} }, // valid
+        { exchange: 'exchange-name' } // invalid
+
+      ]
+      expect(RabbitSchema.validate.bind(null, json))
+        .to.throw(ctx.exchangeErr.message)
+      sinon.assert.calledWith(RabbitSchema._validateExchange, json[1], '[1]')
       done()
     })
   // full topology validation tests in topology.test.js
@@ -317,6 +330,7 @@ describe('rabbitmq-schema', function () {
               ctx.json.bindings[0].destination.bindings[1].destination
             ])
             // twice for coverage
+            expect(ctx.schema.getExchanges()).to.not.equal(ctx.schema._exchanges)
             expect(ctx.schema.getExchanges()).to.deep.equal(ctx.schema._exchanges)
             done()
           })
@@ -327,6 +341,7 @@ describe('rabbitmq-schema', function () {
             var queues = ctx.schema.getQueues()
             expect(queues).to.deep.equal([ ctx.queue ])
             // twice for coverage
+            expect(ctx.schema.getQueues()).to.not.equal(ctx.schema._queues)
             expect(ctx.schema.getQueues()).to.deep.equal(ctx.schema._queues)
             done()
           })
@@ -354,7 +369,46 @@ describe('rabbitmq-schema', function () {
                 .bindings[0].destination
             ])
             // twice for coverage
-            expect(ctx.schema._getElements()).to.equal(ctx.schema._elements)
+            expect(ctx.schema._getElements()).to.deep.equal(ctx.schema._elements)
+            done()
+          })
+        })
+        describe('getQueueByName', function () {
+          it('should get a queue by name', function (done) {
+            expect(ctx.schema.getQueueByName(ctx.queue.queue)).to.deep.equal(ctx.queue)
+            // twice for coverage
+            expect(ctx.schema.getQueueByName(ctx.queue.queue)).to.deep.equal(ctx.queue)
+            done()
+          })
+        })
+        describe('getExchangeByName', function () {
+          it('should get an exchange by name', function (done) {
+            expect(ctx.schema.getExchangeByName('exchange2'))
+              .to.deep.equal(ctx.json.bindings[0].destination)
+            // twice for coverage
+            expect(ctx.schema.getExchangeByName('exchange2'))
+              .to.deep.equal(ctx.json.bindings[0].destination)
+            done()
+          })
+        })
+        describe('getBindings', function () {
+          it('should get all elements from a json', function (done) {
+            var exchanges = ctx.schema.getExchanges()
+            var bindings = ctx.schema.getBindings()
+            var expectedBindings = []
+            exchanges.forEach(function (exchange) {
+              var newBindings = exchange.bindings.map(put('source', exchange))
+              expectedBindings = expectedBindings.concat(newBindings)
+            })
+            expect(bindings).to.deep.equal(expectedBindings)
+            // twice for coverage
+            expect(ctx.schema.getBindings()).to.deep.equal(ctx.schema._bindings)
+            done()
+          })
+        })
+        describe('toJSON', function () {
+          it('should return a clone of the original json', function (done) {
+            expect(ctx.schema.toJSON()).to.deep.equal(ctx.schema._json)
             done()
           })
         })
