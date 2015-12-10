@@ -18,7 +18,11 @@
     "rabbit",
     "schema",
     "graph",
-    "message"
+    "exchange",
+    "queue",
+    "message",
+    "topology",
+    "topologies"
   ],
   "author": "Tejesh Mehta",
   "license": "MIT",
