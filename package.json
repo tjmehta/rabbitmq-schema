@@ -28,8 +28,8 @@
   "homepage": "https://github.com/tjmehta/rabbitmq-schema",
   "devDependencies": {
     "bind-right": "^0.6.0",
-    "code": "^2.0.1",
-    "lab": "^7.3.0",
+    "code": "^1.5.0",
+    "lab": "^6.2.0",
     "nodemon": "^1.8.1",
     "sinon": "^1.17.2",
     "standard": "^5.4.1",
@@ -38,11 +38,8 @@
   "dependencies": {
     "101": "^1.2.0",
     "ajv": "^2.1.3",
-    "bind-right": "^0.6.0",
     "capitalize": "^1.0.0",
-    "code": "^1.5.0",
     "is-circular": "^1.0.0",
     "keypather": "^1.10.1",
-    "lab": "^6.2.0"
   }
 }
