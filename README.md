@@ -45,6 +45,7 @@ var directExchangeSchema = new RabbitSchema({
 ### Validate a Topic Exchange
 * Requires exchange name, type, and atleast one binding
 * Requires all bindings have `routingPattern`
+* Also works with arrays of parallel, nested, connected topologies (see `altSchema` in example below)
 ```js
 var RabbitSchema = require('rabbitmq-schema')
 
@@ -143,7 +144,28 @@ var foostarExchange = {
   options: {} // exchange options, optional
 }
 
-var fullSchema = new RabbitSchema(foostarExchange)
+var fullSchema = new RabbitSchema(foostarExchange) // full nested, connected topology
+
+// also works with parallel, nested, disconnected topologies
+
+var altSchema = new RabbitSchema([
+  {
+    exchange: 'some-exchange',
+    type: 'direct',
+    bindings: [{
+      routingPattern: 'foo.bar',
+      destination: this.queue
+    }]
+  },
+  {
+    exchange: 'some-exchange3',
+    type: 'topic',
+    bindings: [{
+      routingPattern: 'foo.*',
+      destination: this.queue
+    }]
+  }
+])
 ```
 
 ### Validate a message (by traversing topology or direct queue)
