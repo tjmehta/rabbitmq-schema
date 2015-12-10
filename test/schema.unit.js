@@ -34,7 +34,7 @@ describe('rabbitmq-schema', function () {
       var json = {}
       var schema = new RabbitSchema(json)
       sinon.assert.calledWith(RabbitSchema.validate, ctx.mockValidated)
-      expect(schema.json).to.equal(ctx.mockValidated)
+      expect(schema._json).to.deep.equal(ctx.mockValidated)
 
       done()
     })
@@ -56,7 +56,7 @@ describe('rabbitmq-schema', function () {
 
     it('should throw an RabbitSchemaValidationError if json is not an object', function (done) {
       expect(RabbitSchema.validate.bind(null, 'foo'))
-        .to.throw(/json.*object/)
+        .to.throw(/value.*object/)
       done()
     })
 
@@ -64,7 +64,7 @@ describe('rabbitmq-schema', function () {
       var circular = {}
       circular.foo = circular
       expect(RabbitSchema.validate.bind(null, circular))
-        .to.throw(/json.*circular/)
+        .to.throw(/value.*circular/)
       done()
     })
 
@@ -123,7 +123,7 @@ describe('rabbitmq-schema', function () {
       keypather.set(ctx.json,
         'bindings[0].destination.bindings[0].destination', { queue: 'queue' })
       expect(RabbitSchema.validate.bind(null, ctx.json))
-        .to.throw("'bindings[0].destination.bindings[0].destination.json' should have required property 'messageSchema'")
+        .to.throw("'bindings[0].destination.bindings[0].destination' should have required property 'messageSchema'")
 
       done()
     })
@@ -317,7 +317,7 @@ describe('rabbitmq-schema', function () {
               ctx.json.bindings[0].destination.bindings[1].destination
             ])
             // twice for coverage
-            expect(ctx.schema.getExchanges()).to.equal(ctx.schema._exchanges)
+            expect(ctx.schema.getExchanges()).to.deep.equal(ctx.schema._exchanges)
             done()
           })
         })
@@ -327,7 +327,7 @@ describe('rabbitmq-schema', function () {
             var queues = ctx.schema.getQueues()
             expect(queues).to.deep.equal([ ctx.queue ])
             // twice for coverage
-            expect(ctx.schema.getQueues()).to.equal(ctx.schema._queues)
+            expect(ctx.schema.getQueues()).to.deep.equal(ctx.schema._queues)
             done()
           })
         })

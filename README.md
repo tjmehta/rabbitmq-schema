@@ -7,7 +7,7 @@ npm install rabbitmq-schema
 ```
 
 # Usage
-## Validate Rabbit Elements
+## Validate RabbitMQ Elements
 ### Validate a Queue
 * Requires queue name and messageSchema
 ```js
@@ -77,7 +77,7 @@ var fanoutExchangeSchema = new RabbitSchema({
 })
 ```
 
-## Full Topology Schema
+## Validate full RabbitMQ Topology
 * Validates all elements for required properties and types
 * Validates topology to not be circular
 * Validates topology for duplicates
