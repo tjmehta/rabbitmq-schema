@@ -252,6 +252,14 @@ describe('exchange json schema', function () {
         done()
       })
 
+      it('should error if missing "bindings"', function (done) {
+        ctx.exchange.bindings = ctx.queue // invalid binding
+        expect(ctx.validate(ctx.exchange)).to.be.false()
+        // console.log(ctx.validate.errors[0])
+        expect(ctx.validate.errors[0].message).to.match(/should be array/)
+        done()
+      })
+
       it('should error if missing "bindings[*].destination"', function (done) {
         delete ctx.exchange.bindings[0].destination
         expect(ctx.validate(ctx.exchange)).to.be.false()
