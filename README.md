@@ -10,7 +10,19 @@ npm install rabbitmq-schema
 ```js
 var RabbitSchema = require('rabbitmq-schema')
 // Validate your rabbit topology by instantiating a RabbitSchema
-var schema = new RabbitSchema({/*..rabbit topology json..*/})
+var schema = new RabbitSchema({
+  exchange: 'exchange0', // exchange name
+  type: 'direct',        // exchange type
+  options: {}            // optional, assert or check exchange options
+  bindings: {
+    routingPattern: 'foo.bar.key', // required for direct and topic exchanges
+    destination: {
+      queue: 'queue0',         // queue name
+      messageSchema: {}        // json-schema to validate messages w/, http://json-schema.org
+    },
+    args: {}                   // optional, binding args
+  }
+})
 // Get all exchanges in the topology,
 //   returned exchanges are RabbitSchema instances
 var exchanges = schema.getExchanges()
@@ -33,12 +45,22 @@ var bindings = schema.getBindings()
 var binding = bindings[0]
 binding.source // source exchange, RabbitSchema
 binding.destination // destination exchange or queue, RabbitSchema
-binding.routingPattern // optional, routing pattern for direct or topic queue
+binding.routingPattern // routing pattern for direct or topic queue
 // Get direct bindings in the topology,
 //   returned bindings contain `source` and `destination` RabbitSchema instances
-var directBindings = schema.getDirectBindings()
-// if schema is an exchange is will return the "direct" children
-//   bindings of that exchange
+var directBindings = schema.getDirectBindings() // [ /* queue0 */ ]
+// Get a queue by name (in entire topology),
+//   returns queue RabbitSchema
+var queue = schema.getQueueByName('queue0')
+// Get an exchange by name (in entire topology),
+//   returns exchange RabbitSchema
+var queue = schema.getExchangeByName('exchange0')
+// Validate a message by exchange and routingKey
+//   will find all queues the message makes it to
+//   and validate the message against all the `messageSchema`s
+schema.validateMessage('exchange0', 'foo.bar.key', { foo: 1 })
+// Also works with direct queues, by providing queue name
+schema.validateMessage('queue0', { foo: 1 })
 ```
 
 # Usage
