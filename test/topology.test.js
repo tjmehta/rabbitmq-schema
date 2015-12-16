@@ -130,4 +130,20 @@ describe('topology json schema', function () {
       done()
     })
   })
+
+  describe('invalid', function (done) {
+    beforeEach(function (done) {
+      ctx.exchange = ctx.topicExchange
+      ctx.validate = ajv.compile(topologySchema)
+      done()
+    })
+
+    it('should error if non-match', function (done) {
+      var valid = ctx.validate({})
+      // console.log(ctx.validate.errors[0])
+      expect(valid).to.be.false()
+      expect(ctx.validate.errors[0].keyword).to.equal('oneOf')
+      done()
+    })
+  })
 })
