@@ -46,6 +46,7 @@
     "deep-freeze": "0.0.1",
     "is-circular": "^1.0.0",
     "keypather": "^1.10.1",
+    "object-loops": "^0.5.1",
     "object-values": "^1.0.0",
     "set-prototype-of": "^1.0.0"
   }
