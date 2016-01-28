@@ -146,7 +146,6 @@ var RabbitSchema = require('rabbitmq-schema')
 
 var foobarQueue = {
   queue: 'foobar-name', // queue name, required
-  type: 'direct',  // required to be direct, topic, or fanout
   messageSchema: { // "json-schema" for validating queue messages
     type: 'object',
     properties: {
@@ -160,7 +159,6 @@ var foobarQueue = {
 
 var fooquxQueue = {
   queue: 'fooqux-name', // queue name, required
-  type: 'direct',  // required to be direct, topic, or fanout
   messageSchema: { // "json-schema" for validating queue messages
     type: 'string'
     // ...other properties supported by json-schema draft-04...
@@ -212,7 +210,7 @@ var altSchema = new RabbitSchema([
     type: 'direct',
     bindings: [{
       routingPattern: 'foo.bar',
-      destination: this.queue
+      destination: foobarQueue
     }]
   },
   {
@@ -220,7 +218,7 @@ var altSchema = new RabbitSchema([
     type: 'topic',
     bindings: [{
       routingPattern: 'foo.*',
-      destination: this.queue
+      destination: fooquxQueue
     }]
   }
 ])
