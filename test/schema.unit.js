@@ -126,6 +126,12 @@ describe('rabbitmq-schema', function () {
       done()
     })
 
+    it('should throw an RabbitSchemaValidationError if json is not an object w/ parentPath', function (done) {
+      expect(RabbitSchema.validate.bind(null, 'foo', 'bindings[0]'))
+        .to.throw(/bindings\[0\].*object/)
+      done()
+    })
+
     it('should throw an SchemaValidationError if json is circular', function (done) {
       var circular = {}
       circular.foo = circular
