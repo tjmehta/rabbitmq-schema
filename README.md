@@ -13,15 +13,15 @@ var RabbitSchema = require('rabbitmq-schema')
 var schema = new RabbitSchema({
   exchange: 'exchange0', // exchange name
   type: 'direct',        // exchange type
-  options: {}            // optional, assert or check exchange options
-  bindings: {
+  options: {},            // optional, assert or check exchange options
+  bindings: [{
     routingPattern: 'foo.bar.key', // required for direct and topic exchanges
     destination: {
       queue: 'queue0',         // queue name
       messageSchema: {}        // json-schema to validate messages w/, http://json-schema.org
     },
     args: {}                   // optional, binding args
-  }
+  }]
 })
 // Get all exchanges in the topology,
 //   returned exchanges are RabbitSchema instances
