@@ -328,11 +328,11 @@ function assertBindings (channel, fullSchema, cb) {
     if (bindings.destination.exchange) {
       // destination is an exchange
       destName = binding.destination.exchange
-      channel.bindQueue(destName, srcName, binding.args)
+      channel.bindExchange(destName, srcName, binding.routingPattern, binding.args)
     } else {
       // destination is a queue
       destName = binding.destination.queue
-      channel.bindQueue(destName, srcName, binding.args)
+      channel.bindQueue(destName, srcName, binding.routingPattern, binding.args)
     }
   })
 }
