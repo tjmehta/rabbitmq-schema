@@ -325,7 +325,7 @@ function assertBindings (channel, fullSchema, cb) {
     var srcName = bindings.source.exchange
     var destName
 
-    if (bindings.destination.exchange) {
+    if (binding.destination.exchange) {
       // destination is an exchange
       destName = binding.destination.exchange
       channel.bindExchange(destName, srcName, binding.routingPattern, binding.args)

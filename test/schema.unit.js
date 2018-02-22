@@ -443,6 +443,45 @@ describe('rabbitmq-schema', function () {
           done()
         })
       })
+
+      describe('direct queue w/ string message queue', function () {
+        beforeEach(function (done) {
+          ctx.queue = {
+            queue: 'string-queue-name',
+            options: {},
+            messageSchema: {
+              $schema: 'http://json-schema.org/draft-04/schema#',
+              description: 'string-queue-name message',
+              type: 'string',
+            }
+          }
+          ctx.validMessage = 'hello'
+          ctx.schema = new RabbitSchema(ctx.queue)
+          done()
+        })
+
+        it('should error if queue does not exist', function (done) {
+          var schema = ctx.schema
+          expect(
+            schema.validateMessage.bind(schema, '', 'non-existant-queue', {})
+          ).to.throw(/queue.*does not exist/)
+          done()
+        })
+
+        it('should error if the message is invalid for any destination queues', function (done) {
+          var schema = ctx.schema
+          expect(
+            schema.validateMessage.bind(schema, 'string-queue-name', {})
+          ).to.throw(/should be string/)
+          done()
+        })
+
+        it('should pass if the message is valid', function (done) {
+          // expect no errors
+          ctx.schema.validateMessage('', 'string-queue-name', ctx.validMessage)
+          done()
+        })
+      })
     })
 
     describe('largeSchema', function () {
