@@ -26,7 +26,7 @@ var schema = new RabbitSchema({
 // Get all exchanges in the topology,
 //   returned exchanges are RabbitSchema instances
 var exchanges = schema.getExchanges()
-var exchange = exchange[0]
+var exchange = exchanges[0]
 exchange.exchange // name
 exchange.options  // exchange options (for assert or check)
 exchange.getDirectBindings() // direct child bindings, explained below
