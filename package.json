@@ -1,6 +1,6 @@
 {
   "name": "rabbitmq-schema",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A schema definition module for RabbitMQ graphs and messages",
   "main": "index.js",
   "scripts": {
